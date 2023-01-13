@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "thkaguyamod",
   "version": "${version}",
 
   "name": "THKaguya Mod",
@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "thKaguyaMod.THKaguyaMod"
+    ],
+    "client": [
+      "thKaguyaMod.THKaguyaModClient"
     ]
   },
   "mixins": [

@@ -24,7 +24,7 @@ public class UnconsciousEffect extends StatusEffect {
             World world = playerEntity.getEntityWorld();
             List<Entity> entities = world.getOtherEntities(
                     playerEntity,
-                    playerEntity.getBoundingBox().expand(30d, 30d,30d)
+                    playerEntity.getBoundingBox().expand(30D, 30D,30D)
             );
             for (Entity entity:entities) {
                 if (entity instanceof MobEntity)

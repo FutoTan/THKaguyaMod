@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thKaguyaMod.registry.EffectHandler;
+import thKaguyaMod.registry.EntityHandler;
 import thKaguyaMod.registry.ItemHandler;
 
 public class THKaguyaMod implements ModInitializer {
@@ -12,5 +13,6 @@ public class THKaguyaMod implements ModInitializer {
 	public void onInitialize() {
 		ItemHandler.register();
 		EffectHandler.register();
+		EntityHandler.register();
 	}
 }
