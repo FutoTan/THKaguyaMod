@@ -23,7 +23,6 @@ public class CirnoEntityModel extends EntityModel<CirnoEntity> {
     private final ModelPart rightWing3;
     private final ModelPart leftWing3;
     private float leaningPitch;
-    private boolean moving;
     private float angleTick;
 
     public CirnoEntityModel(ModelPart root){
@@ -73,37 +72,41 @@ public class CirnoEntityModel extends EntityModel<CirnoEntity> {
             k = 1.0F;
         }
 
-        this.moving = limbDistance / k > 0.2F;
-
-        if (this.moving) {
-            this.rightArm.pitch = MathHelper.sin(limbAngle * 0.4F) * 1F * limbDistance * 0.5F / k;
-            this.leftArm.pitch = MathHelper.cos(limbAngle * 0.4F) * 1F * limbDistance * 0.5F / k;
-            this.rightArm.yaw = -10F / 180F * (float)Math.PI;
-            this.rightArm.roll = 20F / 180F * (float)Math.PI;
-            this.leftArm.yaw = -rightArm.yaw;
-            this.leftArm.roll = -rightArm.roll;
-        }
-        this.rightLeg.pitch = MathHelper.cos(limbAngle * 0.6F) * 0.7F * limbDistance / k;
-        this.leftLeg.pitch = MathHelper.sin(limbAngle * 0.6F) * 0.7F * limbDistance / k;
-        this.rightLeg.yaw = 0F;
-        this.leftLeg.yaw = 0F;
-        this.rightLeg.roll = 0F;
-        this.leftLeg.roll = 0F;
         this.skirt.pitch = 0F;
+
         if (this.riding) {
             this.rightLeg.setAngles(-((float)Math.PI * 2F / 5F),((float)Math.PI / 14F),((float)Math.PI / 14F));
             this.leftLeg.setAngles(-((float)Math.PI * 2F / 5F),-((float)Math.PI / 14F),-((float)Math.PI / 14F));
 
             this.skirt.pitch = -((float)Math.PI / 5F);
         }
-        if (this.leaningPitch > 0F) {
-            this.leftLeg.pitch = MathHelper.lerp(
-                    this.leaningPitch,
-                    this.leftLeg.pitch,
-                    0.3F * MathHelper.sin(limbAngle * 0.33333334F)
-            );
-            this.rightLeg.pitch = MathHelper.lerp(
-                    this.leaningPitch, this.rightLeg.pitch, 0.3F * MathHelper.cos(limbAngle * 0.33333334F));
+
+        if (entity.isOnGround()) {
+            this.rightLeg.pitch = MathHelper.cos(limbAngle * 0.6F) * 0.7F * limbDistance / k;
+            this.leftLeg.pitch = MathHelper.sin(limbAngle * 0.6F) * 0.7F * limbDistance / k;
+            this.rightLeg.yaw = 0F;
+            this.leftLeg.yaw = 0F;
+            this.rightLeg.roll = 0F;
+            this.leftLeg.roll = 0F;
+
+            if (entity.getMoveControl().isMoving()) {
+                this.rightArm.pitch = MathHelper.sin(limbAngle * 0.4F) * 1F * limbDistance * 0.5F / k;
+                this.leftArm.pitch = MathHelper.cos(limbAngle * 0.4F) * 1F * limbDistance * 0.5F / k;
+                this.rightArm.yaw = -10F / 180F * (float)Math.PI;
+                this.rightArm.roll = 20F / 180F * (float)Math.PI;
+                this.leftArm.yaw = -rightArm.yaw;
+                this.leftArm.roll = -rightArm.roll;
+            }
+
+            if (this.leaningPitch > 0F) {
+                this.leftLeg.pitch = MathHelper.lerp(
+                        this.leaningPitch,
+                        this.leftLeg.pitch,
+                        0.3F * MathHelper.sin(limbAngle * 0.33333334F)
+                );
+                this.rightLeg.pitch = MathHelper.lerp(
+                        this.leaningPitch, this.rightLeg.pitch, 0.3F * MathHelper.cos(limbAngle * 0.33333334F));
+            }
         }
     }
 
@@ -111,30 +114,36 @@ public class CirnoEntityModel extends EntityModel<CirnoEntity> {
     public void animateModel(CirnoEntity entity, float limbAngle, float limbDistance, float tickDelta) {
         this.leaningPitch = entity.getLeaningPitch(tickDelta);
 
-        angleTick += (tickDelta / 100F);
+        angleTick += (tickDelta / 200F);
+
         if (angleTick > Math.PI) angleTick = 0;
 
-        if (!this.moving) {
-            this.rightArm.setAngles(this.riding ?
-                    -1.0679449F + MathHelper.sin(angleTick) * 0.1F :
-                    -0.8679449F + MathHelper.sin(angleTick) * 0.1F,0F,-0.6457718F);
-            this.leftArm.setAngles(this.rightArm.pitch,0F,0.6457718F);
-        }
+        this.rightArm.setAngles(this.riding ?
+                -1.1679449F + MathHelper.sin(angleTick) * 0.2F :
+                -0.9679449F + MathHelper.sin(angleTick) * 0.2F,0F,-0.6457718F);
+        this.leftArm.setAngles(this.rightArm.pitch,0F,0.6457718F);
 
-        if (entity.flying) {
-            this.rightWing.yaw = MathHelper.sin(angleTick * 4) * (float)Math.PI * 0.1F + (float)Math.PI * 0.15F;
-            this.leftWing.yaw = -this.rightWing.yaw;
-            this.rightWing2.yaw = MathHelper.sin(angleTick * 4) * (float)Math.PI * 0.1F + (float)Math.PI * 0.15F;
-            this.leftWing2.yaw = -this.rightWing2.yaw;
-            this.rightWing3.yaw = MathHelper.sin(angleTick * 4) * (float)Math.PI * 0.1F + (float)Math.PI * 0.15F;
-            this.leftWing3.yaw = -this.rightWing2.yaw;
+        if (entity.isOnGround()) {
+            float newYaw = MathHelper.sin(angleTick * 2) * (float)Math.PI * 0.1F + (float)Math.PI * 0.15F;
+            this.rightWing.yaw = newYaw;
+            this.leftWing.yaw = -newYaw;
+            this.rightWing2.yaw = newYaw;
+            this.leftWing2.yaw = -newYaw;
+            this.rightWing3.yaw = newYaw;
+            this.leftWing3.yaw = -newYaw;
         } else {
-            this.rightWing.yaw = MathHelper.sin(angleTick) * (float)Math.PI * 0.1F + (float)Math.PI * 0.15F;
-            this.leftWing.yaw = -this.rightWing.yaw;
-            this.rightWing2.yaw = MathHelper.sin(angleTick) * (float)Math.PI * 0.1F + (float)Math.PI * 0.15F;
-            this.leftWing2.yaw = -this.rightWing2.yaw;
-            this.rightWing3.yaw = MathHelper.sin(angleTick) * (float)Math.PI * 0.1F + (float)Math.PI * 0.15F;
-            this.leftWing3.yaw = -this.rightWing2.yaw;
+            rightLeg.roll = Math.abs(MathHelper.sin(angleTick) * 0.1F);
+            leftLeg.roll = -rightLeg.roll;
+            rightLeg.pitch = Math.abs(MathHelper.sin(angleTick) * 0.2F);
+            leftLeg.pitch = rightLeg.roll;
+
+            float newYaw = MathHelper.sin(angleTick * 8) * (float)Math.PI * 0.1F + (float)Math.PI * 0.15F;
+            this.rightWing.yaw = newYaw;
+            this.leftWing.yaw = -newYaw;
+            this.rightWing2.yaw = newYaw;
+            this.leftWing2.yaw = -newYaw;
+            this.rightWing3.yaw = newYaw;
+            this.leftWing3.yaw = -newYaw;
         }
     }
 
@@ -155,9 +164,7 @@ public class CirnoEntityModel extends EntityModel<CirnoEntity> {
                 this.leftWing2,
                 this.rightWing3,
                 this.leftWing3
-        ).forEach((modelRenderer) -> {
-            modelRenderer.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-        });
+        ).forEach((modelRenderer) -> modelRenderer.render(matrices, vertices, light, overlay, red, green, blue, alpha));
     }
 
     public static TexturedModelData getTexturedModelData() {

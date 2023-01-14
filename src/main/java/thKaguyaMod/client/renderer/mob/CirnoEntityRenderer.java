@@ -10,7 +10,7 @@ import thKaguyaMod.registry.LayerHandler;
 public class CirnoEntityRenderer extends MobEntityRenderer<CirnoEntity, CirnoEntityModel> {
 
     public CirnoEntityRenderer(EntityRendererFactory.Context context) {
-        super(context, new CirnoEntityModel(context.getPart(LayerHandler.Model_Cirno_Layer)),0.5F);
+        super(context, new CirnoEntityModel(context.getPart(LayerHandler.MODEL_CIRNO_LAYER)),0.5F);
     }
 
     @Override
