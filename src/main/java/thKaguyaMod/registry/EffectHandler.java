@@ -7,12 +7,12 @@ import net.minecraft.util.Identifier;
 import thKaguyaMod.effect.UnconsciousEffect;
 
 public class EffectHandler {
-    public static final StatusEffect Unconscious_Effect = new UnconsciousEffect();
+    public static final StatusEffect UNCONSCIOUS_EFFECT = new UnconsciousEffect();
     public static void register(){
         Registry.register(
                 Registries.STATUS_EFFECT,
                 new Identifier("thkaguyamod", "unconscious"),
-                Unconscious_Effect
+                UNCONSCIOUS_EFFECT
         );
     }
 }

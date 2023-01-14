@@ -17,7 +17,7 @@ public class ClosedThirdEyeItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
         playerEntity.getItemCooldownManager().set(this, 20);
-        playerEntity.addStatusEffect(new StatusEffectInstance(EffectHandler.Unconscious_Effect,20));
+        playerEntity.addStatusEffect(new StatusEffectInstance(EffectHandler.UNCONSCIOUS_EFFECT,20));
         return TypedActionResult.success(playerEntity.getStackInHand(hand));
     }
 }

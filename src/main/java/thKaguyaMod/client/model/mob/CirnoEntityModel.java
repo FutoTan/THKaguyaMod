@@ -1,4 +1,4 @@
-package thKaguyaMod.client.model;
+package thKaguyaMod.client.model.mob;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.*;

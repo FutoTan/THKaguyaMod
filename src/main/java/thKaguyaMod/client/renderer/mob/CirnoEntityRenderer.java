@@ -1,9 +1,9 @@
-package thKaguyaMod.client.renderer;
+package thKaguyaMod.client.renderer.mob;
 
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.util.Identifier;
-import thKaguyaMod.client.model.CirnoEntityModel;
+import thKaguyaMod.client.model.mob.CirnoEntityModel;
 import thKaguyaMod.entity.mob.CirnoEntity;
 import thKaguyaMod.registry.LayerHandler;
 

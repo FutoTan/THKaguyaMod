@@ -1,7 +1,7 @@
 package thKaguyaMod.data;
 
 /** 弾幕に関する定数定義 */
-public class Danmaku {
+public class DanmakuData {
 
     /**
      * 難易度（弾幕難易度）
@@ -174,4 +174,148 @@ public class Danmaku {
      * 標準の重力値		Default Gravity
      */
     public static final double GRAVITY_DEFAULT = -0.03D;
+
+    /**
+     * 弾形状		Shot Forms
+     */
+    /** 小弾 */
+    public static final int[] SMALL = {  0,  1,  2,  3,  4,  5,  6,  7};
+    /** 粒弾 */
+    public static final int[] TINY = {  8,  9, 10, 11, 12, 13, 14, 15};
+    /** 中弾 */
+    public static final int[] MEDIUM = { 16, 17, 18, 19, 20, 21, 22, 23};
+    /** 真珠弾 */
+    public static final int[] PEARL = { 24, 25, 26, 27, 28, 29, 30, 31};
+    /** 輪弾 */
+    public static final int[] CIRCLE = { 32, 33, 34, 35, 36, 37, 38, 39};
+    /** 光弾 */
+    public static final int[] LIGHT = { 40, 41, 42, 43, 44, 45, 46, 47};
+    /** 鱗弾 */
+    public static final int[] SCALE = { 48, 49, 50, 51, 52, 53, 54, 55};
+    /** 蝶弾 */
+    public static final int[] BUTTERFLY = { 56, 57, 58, 59, 60, 61, 62, 63};
+    /** 小星弾 */
+    public static final int[] SMALLSTAR = { 64, 65, 66, 67, 68, 69, 70, 71};
+    /** 星弾 */
+    public static final int[] STAR = { 72, 73, 74, 75, 76, 77, 78, 79};
+    /** 米弾 */
+    public static final int[] RICE = { 80, 81, 82, 83, 84, 85, 86, 87};
+    /** 結晶弾 */
+    public static final int[] CRYSTAL = { 88, 89, 90, 91, 92, 93, 94, 95};
+    /** ハート弾 */
+    public static final int[] HEART = { 96, 97, 98, 99,100,101,102,103};
+    /** クナイ弾 */
+    public static final int[] KUNAI = {104,105,106,107,108,109,110,111};
+    /** 札弾 */
+    public static final int[] TALISMAN = {112,113,114,115,116,117,118,119};
+    /** 大光弾 */
+    public static final int[] BIGLIGHT = {120,121,122,123,124,125,126,127};
+    /** 楕円弾 */
+    public static final int[] OVAL = {128,129,130,131,132,133,134,135};
+    /** 使い魔 */
+    public static final int[] FAMILIAR = {136,137,138,139,140,141,142,143};
+    /** 矢弾 */
+    public static final int[] ARROW = {144,145,146,147,148,149,150,151};
+    /** アミュレット */
+    public static final int[] AMULET = {216,217,218,219,220,221,222,223};
+    /** ナイフ弾 */
+    public static final int[] KNIFE = {224,225,226,227,228,229,230,231};
+    /** 風弾 */
+    public static final int[] WIND = {232,233,234,235,236,237,238,239};
+    /** 大弾 */
+    public static final int[] BIG = {240,241,242,243,244,245,246,247};
+    /** 気質弾 */
+    public static final int[] KISHITU = {248,249,250,251,252,253,254,255};
+    /** レーザー */
+    public static final int[] LASER = {512,513,514,515,516,517,518,519};
+
+    /**
+     * 弾の色の名前		Shot Color Names(JP)
+     */
+    public static final String[] COLOR_NAME_JP ={
+            "赤", "青", "緑", "黄", "紫", "水色", "橙", "白", "虹色", "ランダム", "暖色", "寒色", "", "", "", ""};
+
+    /**
+     * 弾の色の名前		Shot Color Names(EN)
+     */
+    public static final String[] COLOR_NAME ={
+            "Red", "Blue", "Green", "Yellow", "Purple", "Aqua", "Orange", "White", "Rainbow", "Random", "Hot", "Cold", "", "", "", ""};
+
+    /**
+     * 弾の名前		Shot Form Names
+     */
+    public static final String[] SHOT_NAME_JP ={
+            "小弾",  "粒弾",  "中弾","真珠弾",  "輪弾",  "光弾",  "鱗弾",  "蝶弾",
+            "小星弾",  "星弾",  "米弾","結晶弾","ハート","クナイ",  "札弾","大光弾",
+            "楕円弾","使い魔","　矢弾","未定義","未定義","未定義","未定義","未定義",
+            "未定義","未定義","未定義","未定義","ナイフ",  "風弾",  "大弾","気質弾"};
+
+    /**
+     * 形状ごとの弾のダメージを定義		Shot Damage by Form
+     */
+    public static final float[] DAMAGE = {	2.4F, 1.0F, 2.8F, 5.0F, 2.0F, 3.4F, 1.6F, 2.8F,
+            1.6F, 3.0F, 1.2F, 1.8F, 3.2F, 2.6F, 1.0F, 6.8F,
+            3.0F, 1.0F, 3.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F,
+            0.0F, 0.0F, 0.0F, 5.0F, 2.6F, 4.0F, 5.0F, 5.0F};
+
+    /**
+     * 形状ごとの弾の大きさを定義		Shot Size by Form
+     */
+    public static final float[] SIZE = {0.30F, 0.15F, 0.50F, 0.30F, 0.30F, 0.30F, 0.15F, 0.30F,
+            0.25F, 0.50F, 0.15F, 0.15F, 0.50F, 0.15F, 0.15F, 0.60F,
+            0.50F, 1.00F, 0.15F, 0.00F, 0.00F, 0.00F, 0.00F, 0.00F,
+            0.00F, 0.00F, 0.00F, 0.40F, 0.30F, 1.00F, 0.90F, 0.90F};
+
+    private static final int[][] ways ={	{ 0},
+
+            { 1},
+            { 1, 1},
+            { 1, 0, 2, 0},
+            { 1, 0, 3, 0},
+            { 1, 3, 1},
+            { 1, 4, 1},
+            { 1, 5, 1},
+            { 1, 3, 3, 1},
+            { 1, 5, 3, 0},
+            { 1, 4, 4, 1},
+
+            { 1, 6, 4, 0},
+            { 1, 5, 5, 1},
+            { 1, 3, 5, 3, 1},
+            { 1, 3, 6, 3, 1},
+            { 1, 4, 5, 4, 1},
+            { 1, 4, 6, 4, 1},
+            { 1, 4, 7, 4, 1},
+            { 1, 3, 5, 5, 3, 1},
+            { 1, 3, 6, 6, 3},
+            { 1, 3, 6, 6, 3, 1},
+
+            { 1, 5, 9, 5, 1},
+            { 1, 3, 7, 7, 3, 1},
+            { 1, 6, 9, 6, 1},
+            { 1, 4, 7, 7, 4, 1},
+            { 1, 3, 5, 7, 5, 3, 1},
+            { 1, 3, 5, 8, 5, 3, 1},
+            { 1, 3, 5, 9, 5, 3, 1},
+            { 1, 3, 6, 8, 6, 3, 1},
+            { 1, 3, 6, 9, 6, 3, 1},
+            { 1, 4, 6, 8, 6, 4, 1},
+
+            { 1, 3, 6, 11, 6, 3, 1},
+            { 1, 3, 6, 12, 6, 3, 1},
+            { 0},
+            { 0},
+            { 0},
+            { 0},
+            { 0},
+            { 0},
+            { 0},
+            { 0},
+
+            { 0},
+            { 0},
+            { 0},
+            { 1, 3, 6, 12, 12, 6, 3, 1}
+
+    };
 }

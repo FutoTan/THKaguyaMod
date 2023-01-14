@@ -7,18 +7,18 @@ import net.minecraft.util.Identifier;
 import thKaguyaMod.item.*;
 
 public class ItemHandler {
-    public static final Item Item_Closed_Third_Eye = new ClosedThirdEyeItem();
-    public static final Item Item_Third_Eye = new ThirdEyeItem();
+    public static final Item CLOSED_THIRD_EYE_ITEM = new ClosedThirdEyeItem();
+    public static final Item THIRD_EYE_ITEM = new ThirdEyeItem();
     public static void register(){
         Registry.register(
                 Registries.ITEM,
                 new Identifier("thkaguyamod", "closed_third_eye"),
-                Item_Closed_Third_Eye
+                CLOSED_THIRD_EYE_ITEM
         );
         Registry.register(
                 Registries.ITEM,
                 new Identifier("thkaguyamod", "third_eye"),
-                Item_Third_Eye
+                THIRD_EYE_ITEM
         );
     }
 }
