@@ -3,6 +3,9 @@ package thKaguyaMod.data;
 /** 弾幕に関する定数定義 */
 public class DanmakuData {
 
+    public static final  int[] COLOR_R = { 224,   0,   0, 224, 224,   0, 255, 255};
+    public static final  int[] COLOR_G = {   0,   0, 224, 224,   0, 224, 128, 255};
+    public static final  int[] COLOR_B = {   0, 224,   0,   0, 224, 224,   0, 255};
     /**
      * 難易度（弾幕難易度）
      */

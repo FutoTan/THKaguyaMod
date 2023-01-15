@@ -21,11 +21,11 @@ public class EntityHandler {
                     .build()
     );
 
-    public static final EntityType<Entity> TH_SHOT_ENTITY = Registry.register(
+    public static final EntityType<THShotEntity> TH_SHOT_ENTITY = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier("thkaguyamod", "th_shot"),
             FabricEntityTypeBuilder.create(SpawnGroup.MISC, THShotEntity::new)
-                    .dimensions(EntityDimensions.changing(0F, 0F))
+                    .dimensions(EntityDimensions.changing(0.25F, 0.25F))
                     .build()
     );
 

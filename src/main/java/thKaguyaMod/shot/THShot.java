@@ -8,6 +8,7 @@ import thKaguyaMod.data.ShotData;
 
 import thKaguyaMod.data.DanmakuData;
 import thKaguyaMod.entity.shot.THShotEntity;
+import thKaguyaMod.registry.EntityHandler;
 
 import java.util.Random;
 
@@ -38,8 +39,9 @@ public class THShot {
                 random = true;
             }
         }
+        thShotEntity = new THShotEntity(EntityHandler.TH_SHOT_ENTITY,world);
 
-        thShotEntity = new THShotEntity(world, user, source, pos,
+        thShotEntity.init(user, source, pos,
                 angle, slope,
                 rotate, rotationSpeed, rotationEnd,
                 firstSpeed, limitSpeed, acceleration,
