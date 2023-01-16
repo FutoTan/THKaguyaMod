@@ -29,12 +29,12 @@ public class ShotData
     /**
      * 弾の遅延時間。1/20秒でこの時間だけ出現が遅れる（動作なし、当たり判定なし）
      */
-    public int delay;
+    public int delayTime;
 
     /**
      * 弾の消滅時間。1/20秒。遅延時間は含まれない
      */
-    public int end;
+    public int endTime;
 
     /**
      * 特殊動作。EntityTHShot内に記述はあるが現状複雑で柔軟性はないので説明は省く
@@ -42,14 +42,14 @@ public class ShotData
     public int special;
 
 
-    public ShotData(int form, int color, float size, float damage, int delay, int end, int special)
+    public ShotData(int form, int color, float size, float damage, int delayTime, int endTime, int special)
     {
         this.form = form;
         this.color = color;
         this.damage = damage;
         this.size = size;
-        this.delay = delay;
-        this.end = end;
+        this.delayTime = delayTime;
+        this.endTime = endTime;
         this.special = special;
     }
     /**

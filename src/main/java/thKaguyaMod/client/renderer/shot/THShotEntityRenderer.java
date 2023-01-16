@@ -23,7 +23,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
     public Identifier getTexture(THShotEntity entity) {
         int color = entity.getShotColor();
         if (entity.getAnimationCount() < 0) {
-            return new Identifier("thkaguyamod", "textures/entity/shot/small_shot.png");
+            return new Identifier("thkaguyamod", "textures/entity/shot/musou_fuuin.png");
         } else {
             switch (entity.getShotForm()) {
                 case DanmakuData.FORM_SMALL, DanmakuData.FORM_TINY, DanmakuData.FORM_MEDIUM -> {
@@ -154,9 +154,9 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
 
         matrices.push();
 
-        matrices.translate(0.0f, 0.1f, 0.0f);
+        matrices.translate(0F, 0.1F, 0F);
         matrices.multiply(this.dispatcher.getRotation());
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180.0f));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180F));
         matrices.scale(size, size, size);
         MatrixStack.Entry entry = matrices.peek();
 
@@ -194,14 +194,14 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         RenderSystem.setShaderTexture(0, texture);
 
         matrices.push();
 
-        matrices.translate(0.0f, 0.1f, 0.0f);
+        matrices.translate(0F, 0.1F, 0F);
         matrices.multiply(this.dispatcher.getRotation());
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180.0f));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180F));
         matrices.scale(size, size, size);
         MatrixStack.Entry entry = matrices.peek();
 
@@ -210,7 +210,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
 
         count = count % 2;
 
@@ -218,7 +218,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         float u2 = (float)(count * 32 + 32) / 64F;
         float v1 = 0F;
         float v2 = 1F;
-        float width = 1.0F;
+        float width = 1F;
 
         int r = DanmakuData.COLOR_R[color];
         int g = DanmakuData.COLOR_G[color];
@@ -238,10 +238,10 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
     }
 
     private void vertex(VertexConsumer vertexConsumer, Matrix4f positionMatrix, Matrix3f normalMatrix, float x, float y, float u, float v, int light) {
-        vertexConsumer.vertex(positionMatrix, x, y, 0.0f).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(normalMatrix, 0.0f, 1.0f, 0.0f).next();
+        vertexConsumer.vertex(positionMatrix, x, y, 0F).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(normalMatrix, 0F, 1F, 0F).next();
     }
 
     private void vertexWithColor(VertexConsumer vertexConsumer, Matrix4f positionMatrix, Matrix3f normalMatrix, float x, float y, float u, float v, int red, int green, int blue, int alpha, int light) {
-        vertexConsumer.vertex(positionMatrix, x, y, 0.0f).color(red, green, blue, alpha).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(normalMatrix, 0.0f, 1.0f, 0.0f).next();
+        vertexConsumer.vertex(positionMatrix, x, y, 0F).texture(u, v).color(red, green, blue, alpha).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(normalMatrix, 0F, 1F, 0F).next();
     }
 }

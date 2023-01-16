@@ -25,7 +25,7 @@ public class EntityHandler {
             Registries.ENTITY_TYPE,
             new Identifier("thkaguyamod", "th_shot"),
             FabricEntityTypeBuilder.create(SpawnGroup.MISC, THShotEntity::new)
-                    .dimensions(EntityDimensions.changing(0.25F, 0.25F))
+                    .dimensions(EntityDimensions.changing(0.1F, 0.1F))
                     .build()
     );
 
