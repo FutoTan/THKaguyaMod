@@ -113,7 +113,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
 
     @Override
     public void render(THShotEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        RenderSystem.enableDepthTest();
+        //RenderSystem.enableDepthTest();
 
         float size = entity.getShotSize();
         float size2;
@@ -147,6 +147,8 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE);
+        } else {
+            RenderSystem.enableDepthTest();
         }
 
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
@@ -184,8 +186,12 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
 
         matrices.pop();
 
-        RenderSystem.enableTexture();
-        RenderSystem.disableBlend();
+        if (blend) {
+            RenderSystem.depthMask(true);
+            RenderSystem.disableBlend();
+        } else {
+            RenderSystem.disableDepthTest();
+        }
     }
 
     public void renderLightEffect(int color, float size, int count, Identifier texture, MatrixStack matrices, int light)
@@ -193,6 +199,9 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR);
+
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthMask(true);
 
         RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         RenderSystem.setShaderTexture(0, texture);
@@ -233,7 +242,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
 
         matrices.pop();
 
-        RenderSystem.enableTexture();
+        RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
     }
 
