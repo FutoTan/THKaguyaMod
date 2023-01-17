@@ -19,11 +19,12 @@ public class THShotEntity extends Entity {
     // 20
     private static final TrackedData<Float> DATA_SHOT_SIZE = DataTracker.registerData(THShotEntity.class, TrackedDataHandlerRegistry.FLOAT);
     // 17
-    private static final TrackedData<Integer> DATA_ANIMATION_COUNT = DataTracker.registerData(THShotEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> DATA_LIVE_TICK = DataTracker.registerData(THShotEntity.class, TrackedDataHandlerRegistry.INTEGER);
     // 16
     private static final TrackedData<Float> DATA_ANGLE_Z = DataTracker.registerData(THShotEntity.class, TrackedDataHandlerRegistry.FLOAT);
     // 18
     private static final TrackedData<Integer> DATA_SHOT_END_TIME = DataTracker.registerData(THShotEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    public float animationTickCount;
     public LivingEntity userEntity;
     public Entity sourceEntity;
     public ShotData shotData;
@@ -44,9 +45,11 @@ public class THShotEntity extends Entity {
     public THShotEntity(EntityType<?> type, World world) {
         super(type, world);
         // test
-        this.shotData = ShotData.shot(DanmakuData.FORM_LIGHT, DanmakuData.RED);
+        this.shotData = ShotData.shot(DanmakuData.FORM_PHANTOM, DanmakuData.RED);
         this.setShotId(this.shotData.form * 8 + this.shotData.color);
         this.setShotSize(this.shotData.size);
+        this.rotationVector = new Vec3d(1F,0,0);
+        this.setLiveTick(1);
         this.calculateDimensions();
     }
 
@@ -92,7 +95,7 @@ public class THShotEntity extends Entity {
         this.lastShotVelocity = this.getVelocity();
 
         this.updateYawAndPitch();
-        this.setAnimationCount(-this.shotData.delayTime);
+        this.setLiveTick(-this.shotData.delayTime);
 
         this.updateAngle();
     }
@@ -102,7 +105,7 @@ public class THShotEntity extends Entity {
         this.dataTracker.startTracking(DATA_SHOT_ID, 0);
         this.dataTracker.startTracking(DATA_SHOT_SIZE, 0F);
         this.dataTracker.startTracking(DATA_SHOT_END_TIME, 0);
-        this.dataTracker.startTracking(DATA_ANIMATION_COUNT, 0);
+        this.dataTracker.startTracking(DATA_LIVE_TICK, 0);
         this.dataTracker.startTracking(DATA_ANGLE_Z, 0F);
     }
 
@@ -138,6 +141,11 @@ public class THShotEntity extends Entity {
         this.setRotation(rotationYaw,rotationPitch);
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+    }
+
     protected void updateYawAndPitch()
     {
         float rotationYaw = THShot.getYawFromVector(this.directionVector.x, this.directionVector.z);
@@ -171,8 +179,12 @@ public class THShotEntity extends Entity {
         this.dataTracker.set(DATA_ANGLE_Z, angleZ);
     }
 
-    public void setAnimationCount(int count) {
-        this.dataTracker.set(DATA_ANIMATION_COUNT, count + 1000);
+    public void setLiveTick(int tick) {
+        this.dataTracker.set(DATA_LIVE_TICK, tick + 1000);
+    }
+
+    public void setAnimationTickCount(float count) {
+        this.animationTickCount = count;
     }
 
     public int getShotEndTime()
@@ -205,9 +217,13 @@ public class THShotEntity extends Entity {
         return this.dataTracker.get(DATA_ANGLE_Z);
     }
 
-    public int getAnimationCount()
+    public int getLiveTick()
     {
-        return this.dataTracker.get(DATA_ANIMATION_COUNT) - 1000;
+        return this.dataTracker.get(DATA_LIVE_TICK) - 1000;
+    }
+
+    public float getAnimationTickCount() {
+        return this.animationTickCount;
     }
 
     @Override
