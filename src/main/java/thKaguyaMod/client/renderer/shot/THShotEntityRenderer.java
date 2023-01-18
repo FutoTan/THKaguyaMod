@@ -1,6 +1,5 @@
 package thKaguyaMod.client.renderer.shot;
 
-import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.*;
@@ -12,8 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.lwjgl.opengl.GL11;
+import thKaguyaMod.client.model.shot.SilverKnifeModel;
 import thKaguyaMod.entity.shot.THShotEntity;
 import thKaguyaMod.data.DanmakuData;
 
@@ -131,6 +129,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         int color = entity.getShotColor();
 
         Identifier texture = this.getTexture(entity);
+        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getItemEntityTranslucentCull(texture));
 
         if (entity.getLiveTick() < 0) {
             int delayCount = -entity.getLiveTick();
@@ -141,56 +140,72 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
             if (size2 > 1.0F) {
                 size2 = 1.0F;
             }
-            renderLightEffect(color, size2, entity.getAnimationTickCount(), texture, matrices, light);
+            this.renderLightEffect(color, size2, entity.getAnimationTickCount(), texture, matrices, light);
         } else {
             switch (entity.getShotForm()) {
                 case DanmakuData.FORM_SMALL, DanmakuData.FORM_TINY, DanmakuData.FORM_MEDIUM, DanmakuData.FORM_PEARL, DanmakuData.FORM_CIRCLE -> {
-                    renderNormalShot(size, color, false, texture, matrices, light);
+                    this.renderNormalShot(size, color, false, texture, matrices, light);
                 }
                 case DanmakuData.FORM_BIG -> {
-                    renderNormalShot(size, color, true, texture, matrices, light);
+                    this.renderNormalShot(size, color, true, texture, matrices, light);
                 }
                 case DanmakuData.FORM_SMALLSTAR, DanmakuData.FORM_STAR -> {
-                    renderStarShot(size, color, entity.getAnimationTickCount(), texture, matrices, light);
+                    this.renderStarShot(size, color, entity.getAnimationTickCount(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_LIGHT, DanmakuData.FORM_BIGLIGHT -> {
-                    renderLightShot(size, color, entity.getAnimationTickCount() % 2, texture, matrices, light);
+                    this.renderLightShot(size, color, entity.getAnimationTickCount() % 2, texture, matrices, light);
                 }
                 case DanmakuData.FORM_FAMILIAR -> {
-                    renderFamiliar(size, color, entity.getAnimationTickCount(), texture, matrices, light);
+                    this.renderFamiliar(size, color, entity.getAnimationTickCount(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_BUTTERFLY -> {
-                    renderButterflyShot(size, color, entity.getAnimationTickCount(), yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
+                    this.renderButterflyShot(size, color, entity.getAnimationTickCount(), yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_KISHITU -> {
-                    renderKishituShot(size, color, entity.getAnimationTickCount(), texture, matrices, light);
+                    this.renderKishituShot(size, color, entity.getAnimationTickCount(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_TALISMAN -> {
-                    renderTalismanShot(size, color, yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
+                    this.renderTalismanShot(size, color, yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_KUNAI -> {
-                    renderKunaiShot(size, color, yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
+                    this.renderKunaiShot(size, color, yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_ARROW -> {
-                    renderArrowShot(size, color, yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
+                    this.renderArrowShot(size, color, yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_SCALE -> {
-                    renderScaleShot(size, color, yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), entity.getX(), entity.getY(), entity.getZ(), texture, matrices, light);
+                    this.renderScaleShot(size, color, yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), entity.getX(), entity.getY(), entity.getZ(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_RICE -> {
-                    renderRiceShot(size, yaw, (float) entity.rotationVector.getX(), 4.0F,  1.20F, -2.0F, 7, 5, color, 180, texture, matrices, light);
+                    this.renderRiceShot(size, yaw, (float) entity.rotationVector.getX(), 4.0F,  1.20F, -2.0F, 7, 5, color, 180, texture, matrices, light);
                 }
                 case DanmakuData.FORM_CRYSTAL -> {
-                    renderCrystalShot(size, color, yaw, (float) entity.rotationVector.getX(), texture, matrices, light);
+                    this.renderCrystalShot(size, color, yaw, (float) entity.rotationVector.getX(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_AMULET -> {
-                    renderAmuletShot(size, color, entity.getAnimationTickCount(), yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
+                    this.renderAmuletShot(size, color, entity.getAnimationTickCount(), yaw, (float) entity.rotationVector.getX(), entity.getAngleZ(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_WIND -> {
-                    renderWindShot(size, color, entity.getAnimationTickCount(), texture, matrices, light);
+                    this.renderWindShot(size, color, entity.getAnimationTickCount(), texture, matrices, light);
                 }
                 case DanmakuData.FORM_PHANTOM -> {
-                    renderPhantomShot(size, color, entity.getAnimationTickCount(), texture, matrices, light);
+                    this.renderPhantomShot(size, color, entity.getAnimationTickCount(), texture, matrices, light);
+                }
+                case DanmakuData.FORM_KNIFE -> {
+                    SilverKnifeModel silverKnifeModel = new SilverKnifeModel();
+
+                    matrices.push();
+
+                    matrices.translate(0F, 0.1F, 0F);
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(yaw));
+                    matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees((float) entity.rotationVector.getX()));
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(entity.getAngleZ()));
+                    matrices.scale(size * 3.0F, size * 3.0F, size * 3.0F);
+
+                    silverKnifeModel.render(matrices,vertexConsumer, light, OverlayTexture.DEFAULT_UV,
+                            1.0F, 1.0F, 1.0F, 1.0F);
+
+                    matrices.pop();
                 }
                 default -> {}
             }
@@ -1016,8 +1031,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         RenderSystem.disableBlend();
     }
 
-    private void renderRiceShotPart(MatrixStack matrices, int light, float size, float yaw, float pitch,  double length, float width, float zPos, int zAngleDivNum, int zDivNum, int color, int alpha)
-    {
+    private void renderRiceShotPart(MatrixStack matrices, int light, float size, float yaw, float pitch,  double length, float width, float zPos, int zAngleDivNum, int zDivNum, int color, int alpha) {
         MatrixStack.Entry entry = matrices.peek();
 
         Matrix4f positionMatrix = entry.getPositionMatrix();
@@ -1137,8 +1151,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         RenderSystem.disableBlend();
     }
 
-    private void renderOvalShotPart(MatrixStack matrices, int light, float size, float yaw, float pitch, double length, float width, double zOffset, int zAngleDivNum, int zDivNum, int color, float alpha)
-    {
+    private void renderOvalShotPart(MatrixStack matrices, int light, float size, float yaw, float pitch, double length, float width, double zOffset, int zAngleDivNum, int zDivNum, int color, float alpha) {
         MatrixStack.Entry entry = matrices.peek();
 
         Matrix4f positionMatrix = entry.getPositionMatrix();
@@ -1220,8 +1233,7 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         }
     }
 
-    private void renderHarfOvalShotPart(MatrixStack matrices, int light, float size, float yaw, float pitch, double length, float width, float zPos, int zAngleDivNum, int zDivNum, int color, int alpha)
-    {
+    private void renderHarfOvalShotPart(MatrixStack matrices, int light, float size, float yaw, float pitch, double length, float width, float zPos, int zAngleDivNum, int zDivNum, int color, int alpha) {
         MatrixStack.Entry entry = matrices.peek();
 
         Matrix4f positionMatrix = entry.getPositionMatrix();
@@ -1401,9 +1413,6 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(true);
 
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR);
-
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderTexture(0, texture);
 
@@ -1538,12 +1547,13 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         size = 0.7F;
 
         matrices.translate(0F, 0.1F, 0F);
+        matrices.multiply(this.dispatcher.getRotation());
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180F));
         matrices.scale(size, size, size);
 
         this.renderPhantomPart(texture, matrices, light, color, time_r, 0);
 
         matrices.translate((float)Math.sin(time_r * 5) * 0.2F, 0.1F + (count % 20) * 0.06F, 0F);
-
         size = 0.9F * ((20F - (count % 20)) / 20F);
         matrices.scale(size, size, size);
         this.renderPhantomPart(texture, matrices, light, color, time_r, 0);
@@ -1570,12 +1580,12 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         BufferBuilder bufferBuilder = tessellator.getBuffer();
 
         int pattern = 0;//time % 2;
-        float umin = (float)((pattern % 32) * 32 + 0) / 64F;
-        float umax = (float)((pattern % 32) * 32 + 32) / 64F;
-        float vmin = 0.0F;
-        float vmax = 1.0F;
+        float uMin = (float)((pattern % 32) * 32 + 0) / 64F;
+        float uMax = (float)((pattern % 32) * 32 + 32) / 64F;
+        float vMin = 0.0F;
+        float vMax = 1.0F;
 
-        float alpha = (40F - (float)damage) / 40F;
+        float alpha = ((40F - (float)damage) / 40F) * 255F;
 
         int r = (int) (DanmakuData.COLOR_R[color] * 0.3F);
         int g = (int) (DanmakuData.COLOR_G[color] * 0.3F);
@@ -1588,24 +1598,22 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
         RenderSystem.setShaderTexture(0, texture);
 
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
-        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.7F + (float)Math.sin(time_r * 3.0D) * 0.1F, -0.2F - (float)Math.cos(time_r * 7.0F) * 0.1F, 0F, umin, vmax, r, g, b, (int) (0.3 * alpha), light);
-        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.7F - (float)Math.cos(time_r * 4.0D) * 0.1F, -0.2F - (float)Math.sin(time_r * 5.0F) * 0.1F, 0F, umax, vmax, r, g, b, (int) (0.3 * alpha), light);
-        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.7F + (float)Math.sin(time_r * 5.0D) * 0.1F,  1.2F + (float)Math.cos(time_r * 4.0F) * 0.1F, 0F, umax, vmin, r, g, b, (int) (0.3 * alpha), light);
-        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.7F - (float)Math.cos(time_r * 7.0D) * 0.1F,  1.2F + (float)Math.sin(time_r * 3.0F) * 0.1F, 0F, umin, vmin, r, g, b, (int) (0.3 * alpha), light);
+        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.7F + (float)Math.sin(time_r * 3.0D) * 0.1F, -0.2F - (float)Math.cos(time_r * 7.0F) * 0.1F, 0F, uMin, vMax, r, g, b, (int) (0.3 * alpha), light);
+        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.7F - (float)Math.cos(time_r * 4.0D) * 0.1F, -0.2F - (float)Math.sin(time_r * 5.0F) * 0.1F, 0F, uMax, vMax, r, g, b, (int) (0.3 * alpha), light);
+        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.7F + (float)Math.sin(time_r * 5.0D) * 0.1F,  1.2F + (float)Math.cos(time_r * 4.0F) * 0.1F, 0F, uMax, vMin, r, g, b, (int) (0.3 * alpha), light);
+        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.7F - (float)Math.cos(time_r * 7.0D) * 0.1F,  1.2F + (float)Math.sin(time_r * 3.0F) * 0.1F, 0F, uMin, vMin, r, g, b, (int) (0.3 * alpha), light);
         tessellator.draw();
 
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
-        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.6F - (float)Math.cos(time_r * 7.0D) * 0.1F, -0.1F + (float)Math.sin(time_r * 5.0D) * 0.1F, 0.001F, umin, vmax, r, g, b, (int) (0.7 * alpha), light);
-        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.6F + (float)Math.sin(time_r * 3.0D) * 0.1F, -0.1F + (float)Math.cos(time_r * 4.0D) * 0.1F, 0.001F, umax, vmax, r, g, b, (int) (0.7 * alpha), light);
-        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.6F - (float)Math.cos(time_r * 4.0D) * 0.1F,  1.1F - (float)Math.sin(time_r * 3.0D) * 0.1F, 0.001F, umax, vmin, r, g, b, (int) (0.7 * alpha), light);
-        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.6F + (float)Math.sin(time_r * 5.0D) * 0.1F,  1.1F - (float)Math.cos(time_r * 7.0D) * 0.1F, 0.001F, umin, vmin, r, g, b, (int) (0.7 * alpha), light);
+        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.6F - (float)Math.cos(time_r * 7.0D) * 0.1F, -0.1F + (float)Math.sin(time_r * 5.0D) * 0.1F, 0.001F, uMin, vMax, r, g, b, (int) (0.7 * alpha), light);
+        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.6F + (float)Math.sin(time_r * 3.0D) * 0.1F, -0.1F + (float)Math.cos(time_r * 4.0D) * 0.1F, 0.001F, uMax, vMax, r, g, b, (int) (0.7 * alpha), light);
+        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.6F - (float)Math.cos(time_r * 4.0D) * 0.1F,  1.1F - (float)Math.sin(time_r * 3.0D) * 0.1F, 0.001F, uMax, vMin, r, g, b, (int) (0.7 * alpha), light);
+        this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.6F + (float)Math.sin(time_r * 5.0D) * 0.1F,  1.1F - (float)Math.cos(time_r * 7.0D) * 0.1F, 0.001F, uMin, vMin, r, g, b, (int) (0.7 * alpha), light);
         tessellator.draw();
 
         RenderSystem.disableBlend();
-        for (int i = 0; i < 3; i++)
-        {
-            if (damage > 0)
-            {
+        for (int i = 0; i < 3; i++) {
+            if (damage > 0) {
                 r = 255;
                 g = 0;
                 b = 0;
@@ -1616,10 +1624,10 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
                 RenderSystem.setShaderTexture(0, texture);
 
                 bufferBuilder.begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
-                this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.5F,  0.0F, 0.002F, umin, vmax, r, g, b, (int)alpha, light);
-                this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.5F,  0.0F, 0.002F, umax, vmax, r, g, b, (int)alpha, light);
-                this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.5F,  1.0F, 0.002F, umax, vmin, r, g, b, (int)alpha, light);
-                this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.5F,  1.0F, 0.002F, umin, vmin, r, g, b, (int)alpha, light);
+                this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.5F,  0.0F, 0.002F, uMin, vMax, r, g, b, (int)alpha, light);
+                this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.5F,  0.0F, 0.002F, uMax, vMax, r, g, b, (int)alpha, light);
+                this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix,  0.5F,  1.0F, 0.002F, uMax, vMin, r, g, b, (int)alpha, light);
+                this.vertexWithColor(bufferBuilder, positionMatrix, normalMatrix, -0.5F,  1.0F, 0.002F, uMin, vMin, r, g, b, (int)alpha, light);
                 tessellator.draw();
 
                 RenderSystem.disableBlend();
@@ -1628,10 +1636,10 @@ public class THShotEntityRenderer extends EntityRenderer<THShotEntity> {
                 RenderSystem.setShaderTexture(0, texture);
 
                 bufferBuilder.begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_TEXTURE);
-                this.vertex(bufferBuilder, positionMatrix, normalMatrix, -0.5F,  0.0F, 0.002F, umin, vmax, light);
-                this.vertex(bufferBuilder, positionMatrix, normalMatrix,  0.5F,  0.0F, 0.002F, umax, vmax, light);
-                this.vertex(bufferBuilder, positionMatrix, normalMatrix,  0.5F,  1.0F, 0.002F, umax, vmin, light);
-                this.vertex(bufferBuilder, positionMatrix, normalMatrix, -0.5F,  1.0F, 0.002F, umin, vmin, light);
+                this.vertex(bufferBuilder, positionMatrix, normalMatrix, -0.5F,  0.0F, 0.002F, uMin, vMax, light);
+                this.vertex(bufferBuilder, positionMatrix, normalMatrix,  0.5F,  0.0F, 0.002F, uMax, vMax, light);
+                this.vertex(bufferBuilder, positionMatrix, normalMatrix,  0.5F,  1.0F, 0.002F, uMax, vMin, light);
+                this.vertex(bufferBuilder, positionMatrix, normalMatrix, -0.5F,  1.0F, 0.002F, uMin, vMin, light);
                 tessellator.draw();
             }
         }

@@ -4,16 +4,19 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import thKaguyaMod.data.DanmakuData;
 import thKaguyaMod.data.ShotData;
 import thKaguyaMod.shot.THShot;
 
 
-public class THShotEntity extends Entity {
+public class THShotEntity extends ProjectileEntity {
     // 19
     private static final TrackedData<Integer> DATA_SHOT_ID = DataTracker.registerData(THShotEntity.class, TrackedDataHandlerRegistry.INTEGER);
     // 20
@@ -42,15 +45,25 @@ public class THShotEntity extends Entity {
     public float rotationYawSpeed;
     public int rotationEndTime;
 
-    public THShotEntity(EntityType<?> type, World world) {
-        super(type, world);
-        // test
-        this.shotData = ShotData.shot(DanmakuData.FORM_PHANTOM, DanmakuData.RED);
+    public THShotEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
+        super(entityType, world);
+        //test
+        this.shotData = ShotData.shot(DanmakuData.FORM_KNIFE, DanmakuData.RED);
         this.setShotId(this.shotData.form * 8 + this.shotData.color);
         this.setShotSize(this.shotData.size);
         this.rotationVector = new Vec3d(1F,0,0);
+        this.setVelocity(1F,0,0,1F,0);
+        this.setOwner(world.getClosestPlayer(this,10F));
         this.setLiveTick(1);
         this.calculateDimensions();
+    }
+
+    @Override
+    protected void onCollision(HitResult hitResult) {
+        super.onCollision(hitResult);
+        if (!this.world.isClient) {
+            this.discard();
+        }
     }
 
     @Override
@@ -199,12 +212,12 @@ public class THShotEntity extends Entity {
 
     public int getShotForm()
     {
-        return (getShotId() - getShotColor()) / 8;
+        return (this.getShotId() - this.getShotColor()) / 8;
     }
 
     public int getShotColor()
     {
-        return getShotId() % 8;
+        return this.getShotId() % 8;
     }
 
     public float getShotSize()
